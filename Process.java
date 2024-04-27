@@ -3,7 +3,7 @@ import java.util.*;
 
 interface InMemoryDB {
 
-    int get(String key);
+    Integer get(String key);
 
     void put(String key, int val);
 
@@ -23,20 +23,20 @@ public class Process implements InMemoryDB {
     //Transaction flag, if 1, door is open, can close to start transaction
     int open = 1;
 
-    public int get(String key) {
+    public Integer get(String key) {
 
         if (open == 1) {
             if (publicKeys.get(key) != null) {
                 return publicKeys.get(key);
             }
             else {
-                System.out.print("Error - Key Not Found ");
-                return -1;
+                System.out.print("Error - Key Not Found");
+                return null;
             }
         }
         else {
-            System.out.print("Error - Transaction In Progress ");
-            return -1;
+            System.out.print("Error - Transaction In Progress");
+            return null;
         }
     }
 
@@ -97,9 +97,9 @@ public class Process implements InMemoryDB {
         //Return null when function has return type int???
         //this req is inting this function dawg /j 
         System.out.println("Testing: get(\"A\") when A does not exist");
-        System.out.println("    Expected: Error - Key Not Found -1");
+        System.out.println("    Expected: Error - Key Not Found");
         System.out.print("      Actual: ");
-        System.out.print(process.get("A"));
+        process.get("A");
 
         System.out.println("\n\n");
 
@@ -119,9 +119,9 @@ public class Process implements InMemoryDB {
 
         //Should return null, because updates to A are not committed yet
         System.out.println("Testing: get(\"A\") with A in Private Changes");
-        System.out.println("    Expected: Error - Transaction In Progress -1");
+        System.out.println("    Expected: Error - Transaction In Progress");
         System.out.print("      Actual: ");
-        System.out.print(process.get("A"));
+        process.get("A");
 
         System.out.println("\n\n");
 
@@ -157,9 +157,9 @@ public class Process implements InMemoryDB {
 
         //Should return null because B does not exist in the database
         System.out.println("Testing: get(\"B\") when B does not exist");
-        System.out.println("    Expected: Error - Key Not Found -1");
+        System.out.println("    Expected: Error - Key Not Found");
         System.out.print("      Actual: ");
-        System.out.print(process.get("B"));
+        process.get("B");
 
         System.out.println("\n\n");
 
@@ -174,8 +174,8 @@ public class Process implements InMemoryDB {
 
         //Should return null because changes to B were rolled back
         System.out.println("Testing: get(\"B\") when B was rolled back");
-        System.out.println("    Expected: Error - Key Not Found -1");
+        System.out.println("    Expected: Error - Key Not Found");
         System.out.print("      Actual: ");
-        System.out.print(process.get("B"));
+        process.get("B");
     }
 }
